@@ -28,7 +28,7 @@ if __name__ == '__main__':
         
         print(np.array(frame).shape)
         cv2.imshow("camOut", frame)
-        cv2.waitKey(1)
-        time.sleep(1 / (mp4_fps * 1.5))
+        cv2.waitKey(0)
+        # time.sleep(1 / (mp4_fps * 1.5))
 
     cap.release()
