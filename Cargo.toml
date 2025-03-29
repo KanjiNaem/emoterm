@@ -1,0 +1,13 @@
+[package]
+name = "emoterm"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+opencv = "0.94.3"
+image = "0.25.6"
+gif = "0.13.1"
+either = "1.15.0"
+tempfile = "3.19.1"
+url = "2.5.4"
+thiserror = "2.0.12"
