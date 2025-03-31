@@ -1,7 +1,7 @@
 use opencv::{highgui, prelude::*, videoio::{self, VideoCapture, VideoCaptureProperties, CAP_PROP_FPS}, Result};
 
 pub fn get_vid_from_mp4(file_path: &str) -> Result<()> {
-    let win_name = "captureWindow";
+    let win_name = "capture_window";
     highgui::named_window(win_name, highgui::WINDOW_AUTOSIZE)?;
     let mut vid_player = VideoCapture::from_file_def(file_path)?;
     let opened = videoio::VideoCapture::is_opened(&vid_player)?;
