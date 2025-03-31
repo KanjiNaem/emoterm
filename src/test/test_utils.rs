@@ -1,0 +1,1 @@
+pub const TEST_MP4_PATH: &str = "/home/kanjinaem/coding/emoterm/src/test/qtEmoBoyDancingTest.mp4"; 
