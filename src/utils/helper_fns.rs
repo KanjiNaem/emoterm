@@ -32,3 +32,13 @@ pub fn mat_to_vec3(mat: &Mat) -> Result<Vec<[u8; 3]>> {
 
     Ok(result)
 }
+
+#[allow(dead_code)]
+pub fn assign_ascii_for_brightness_av(input_vec: [u8; 3]) -> String {
+    let brightness_ascii_map: Vec<&str> = vec![" ", ".", "","", "-", "~", ":", ";", "=", "!", "*", "?", "$", "@", "#"];
+    let weighted_brightness_av: f64 = (0.2126 * input_vec[0] as f64) + (0.0722 * input_vec[1] as f64) + (0.7152 * input_vec[2] as f64);
+    let char_range: f64 = 255.0 / brightness_ascii_map.len() as f64;
+    let index_min_eval: usize = f64::min((weighted_brightness_av / char_range) as f64, (brightness_ascii_map.len() - 1) as f64) as usize;
+    let assigned_ascii: String = String::from(brightness_ascii_map[index_min_eval]);
+    return assigned_ascii;
+}
