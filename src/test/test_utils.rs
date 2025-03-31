@@ -1,10 +1,11 @@
 use opencv::{
     prelude::*, 
     videoio::{
-        self, 
-        VideoCapture, 
-        highgui,
+        self,  
+        CAP_PROP_FPS,
+        VideoCapture,
     }, 
+    highgui,
     Result,
 };
 
@@ -37,4 +38,5 @@ pub fn vid_cap_from_mp4_in_player_test(file_path: &str) -> Result<()> {
     Ok(())
 }
 
-// pub const TEST_MP4_PATH: &str = "/home/kanjinaem/coding/emoterm/src/test/qtEmoBoyDancingTest.mp4"; 
+#[allow(dead_code)]
+pub const TEST_MP4_PATH: &str = "/home/kanjinaem/coding/emoterm/src/test/qtEmoBoyDancingTest.mp4"; 
