@@ -1,6 +1,7 @@
 // use super::super::test::test_utils::*;
 use super::super::utils::helper_fns::*;
 
+use image::DynamicImage;
 use opencv::{
     prelude::*, 
     videoio::{
@@ -10,28 +11,49 @@ use opencv::{
     Result,
 };
 
-pub fn vid_cap_from_mp4_test(file_path: &str) -> Result<()> {
-    let mut vid_player = VideoCapture::from_file_def(file_path)?;
-    let opened = videoio::VideoCapture::is_opened(&vid_player)?;
-    if !opened {
-        panic!("////////////////////// can't open vid file :( //////////////////////");
-    } 
-
-    let mut curr_frame = Mat::default();
-    vid_player.read(&mut curr_frame)?;
-
-    let test_vec: Vec<[u8; 3]> = mat_to_vec3(&curr_frame)?; //bgr
-    let mut ascii_vec: Vec<String> = vec![String::from(""); test_vec.len()];
-    
-    let mut curr_px: usize = 0;
-    for curr_brg_vec in test_vec {
-        ascii_vec[curr_px] = assign_ascii_for_brightness_av(curr_brg_vec.clone());
-        curr_px += 1;
-    } 
-
-    // dbg!(test_vec);
-    // dbg!(&ascii_vec);
-    Ok(())
+enum FrameIterator {
+    Image(Option<DynamicImage>),
+    Video(VideoCapture),
 }
 
+impl FrameIterator {
+    pub fn skip_frames(&mut self, skip_amount: usize) {
+        match self {
+            FrameIterator::Image(_) => {}
+            FrameIterator::Video(ref mut vid) => {
+                for _ in 0..skip_amount {
+                    let mut frame = Mat::default();
+                    if !vid.read(&mut frame).unwrap_or(false) || frame.empty() {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    pub fn reset(&mut self) {
+        match self {
+            FrameIterator::Image(_) => {}
+            FrameIterator::Video(ref mut vid) => {
+                let _ = vid.set(opencv::videoio::CAP_PROP_POS_AVI_RATIO, 0.0);
+            }
+        }
+    }
+}
+
+impl Iterator for FrameIterator {
+    type Item = DynamicImage;
+    fn next(&mut self) -> Option<Self::Item> {
+        match self {
+            FrameIterator::Image(ref mut img) => img.take(),
+            FrameIterator::Video(ref mut video) => cap_vid_frame(video),
+        }
+    }
+}
+
+pub struct VideoData {
+    pub frame_iterator: FrameIterator,
+    pub fps: f64,
+
+}
 
