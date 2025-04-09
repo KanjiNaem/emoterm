@@ -41,8 +41,6 @@ use std::{
     time::Duration,
 };
 
-
-
 #[allow(dead_code)]
 struct Terminal {
     fg_color: Color,
@@ -70,7 +68,7 @@ impl Terminal {
 
 
     // TODO: impl term runing logic
-    
+
     // pub fn test_term_logic(&mut self, barrier: std::sync::Arc<std::sync::Barrier>) -> io::Result<()> {
     //     execute!(
     //         stdout(),
@@ -88,7 +86,7 @@ impl Terminal {
     //     Ok(())
     // }
     
-    fn handle_event(&mut self, curr_event: Event) -> IOResult<()> {
+    fn handle_key_press_event(&mut self, curr_event: Event) -> IOResult<()> {
 
         match curr_event {
             Event::Key(KeyEvent {
